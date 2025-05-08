@@ -5,3 +5,4 @@ PyPDF2
 mammoth
 openai
 numpy
+python-3.10
