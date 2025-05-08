@@ -2,31 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.py",
+      "src": "api/*.py",
       "use": "@vercel/python"
     },
     {
-      "src": "package.json",
+      "src": "frontend/package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "cleanUrls": true
-      }
+      "config": { "distDir": "build" }
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/$1.py",
-      "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
+    { "src": "/api/(.*)",       "dest": "api/$1.py" },
+    { "src": "/(.*)",           "dest": "frontend/build/$1" }
   ]
 }
