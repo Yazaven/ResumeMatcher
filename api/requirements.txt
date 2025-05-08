@@ -1,0 +1,8 @@
+Flask
+flask-cors
+python-dotenv
+PyPDF2
+mammoth
+openai
+numpy
+vercel-wsgi
