@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "builds": [{
+      "src": "package.json",
+      "use": "@vercel/next",
+      "config": {
+        "environment": {
+          "REACT_APP_API_URL": "@react_app_api_url",
+          "REACT_APP_ENV": "@react_app_env"
+        }
+      }
+    }],
+    "routes": [
+      { "src": "/_next/static/(.*)", "headers": { "Cache-Control": "public, max-age=31536000" } },
+      { "src": "/(.*)", "dest": "/$1" }
+    ]
+  }

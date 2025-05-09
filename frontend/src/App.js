@@ -8,6 +8,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const savedMode = localStorage.getItem('darkMode') === 'true';
@@ -25,27 +26,27 @@ function App() {
   const handleFileChange = (e, setter) => setter(e.target.files[0]);
 
   const handleSubmit = async () => {
-    if (!resumeFile || !jobFile) return alert('Please upload both files.');
-    setLoading(true);
+      if (!resumeFile || !jobFile) return alert('Upload both files.');
+      setLoading(true);
   
-    const form = new FormData();
-    form.append('resume', resumeFile);
-    form.append('job', jobFile);
+      const form = new FormData();
+      form.append('resume', resumeFile);
+      form.append('job', jobFile);
   
-    try {
-      const { data } = await axios.post(
-        `${process.env.REACT_BASEURL}/match`,
-        form,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
-      );
-      setResult(data);
-    } catch (err) {
-      const errorMessage = err.response?.data?.error || "Something went wrong. Please try again later.";
-      setResult({ error: errorMessage });
-    } finally {
-      setLoading(false);
-    }
+      try {
+          const { data } = await axios.post(
+              `${apiUrl}/match`, // Use the correct API endpoint from the Flask backend
+              form,
+              { headers: { 'Content-Type': 'multipart/form-data' } }
+          );
+          setResult(data);
+      } catch (err) {
+          setResult({ error: err.response?.data?.error || err.message });
+      } finally {
+          setLoading(false);
+      }
   };
+  
       
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-6">

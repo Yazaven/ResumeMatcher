@@ -1,19 +1,16 @@
 {
-  "builds": [
-      {
-          "src": "api/app.py",
-          "use": "@vercel/python"
+    "version": 2,
+    "builds": [{
+      "src": "app.py",
+      "use": "@vercel/python",
+      "config": { 
+        "maxLambdaSize": "15mb",
+        "environment": {
+          "OPENAI_API_KEY": "@openai_api_key",
+          "API_ALLOWED_ORIGINS": "@api_allowed_origins"
+        }
       }
-  ],
-  "routes": [
-      {
-          "src": "(.*)",
-          "dest": "app.py"
-      },
-      {
-          "src": "(.*)",
-          "headers": {"Access-Control-Allow-Origin": "*"},
-          "continue": true
-      }
-  ]
-}
+    }],
+    "routes": [{ "src": "/(.*)", "dest": "app.py" }]
+  }
+  
