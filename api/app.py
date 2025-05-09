@@ -13,9 +13,16 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
-API_ALLOWED_ORIGINS = os.getenv("API_ALLOWED_ORIGINS", "").split(",")
-
-CORS(app, origins=API_ALLOWED_ORIGINS)  # Dynamic CORS configuration
+CORS(app, resources={
+    r"/match": {
+        "origins": [
+            "https://resume-matcher-mocha.vercel.app",
+            "http://localhost:3000"                    
+        ],
+        "methods": ["POST"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 
 def truncate_text(text, max_words=300):
