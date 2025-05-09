@@ -34,7 +34,7 @@ function App() {
   
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_BASEURL}/api/match`,
+        `${process.env.REACT_BASEURL}/match`,
         form,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
