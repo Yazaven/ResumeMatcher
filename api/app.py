@@ -27,6 +27,12 @@ CORS(app, resources={
 
 def truncate_text(text, max_words=300):
     return " ".join(text.split()[:max_words])
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://resume-matcher-mocha.vercel.app'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
 
 def extract_text_from_pdf(file_bytes):
     reader = PdfReader(BytesIO(file_bytes))
@@ -45,8 +51,16 @@ def cosine_similarity(a, b):
     a, b = np.array(a), np.array(b)
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
 
-@app.route("/match", methods=["POST"])
+@app.before_request
+def enforce_https():
+    if request.headers.get('X-Forwarded-Proto') == 'http':
+        url = request.url.replace('http://', 'https://', 1)
+        return redirect(url, code=301)
+
+@app.route('/match', methods=['POST', 'OPTIONS'])
 def match():
+    if request.method == 'OPTIONS':
+        return '', 204
     if "resume" not in request.files or "job" not in request.files:
         return jsonify({"error": "Please upload both files"}), 400
 
