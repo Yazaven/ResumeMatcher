@@ -2,15 +2,15 @@
     "version": 2,
     "builds": [{
       "src": "app.py",
-      "use": "@vercel/python",
-      "config": { 
-        "maxLambdaSize": "15mb",
-        "environment": {
-          "OPENAI_API_KEY": "@openai_api_key",
-          "API_ALLOWED_ORIGINS": "@api_allowed_origins"
-        }
-      }
+      "use": "@vercel/python"
     }],
-    "routes": [{ "src": "/(.*)", "dest": "app.py" }]
+    "routes": [{
+      "src": "/match",
+      "dest": "app.py",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://resume-matcher-mocha.vercel.app",
+        "Access-Control-Allow-Methods": "POST",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    }]
   }
-  

@@ -8,7 +8,7 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = process.env.REACT_APP_API_URL || 'https://resume-matcher-btpn.vercel.app';
 
   useEffect(() => {
     const savedMode = localStorage.getItem('darkMode') === 'true';
