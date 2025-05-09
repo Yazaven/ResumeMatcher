@@ -25,13 +25,13 @@ function App() {
   const handleFileChange = (e, setter) => setter(e.target.files[0]);
 
   const handleSubmit = async () => {
-    if (!resumeFile || !jobFile) return alert('Upload both files.');
+    if (!resumeFile || !jobFile) return alert('Please upload both files.');
     setLoading(true);
-
+  
     const form = new FormData();
     form.append('resume', resumeFile);
     form.append('job', jobFile);
-
+  
     try {
       const { data } = await axios.post(
         `${process.env.REACT_BASEURL}/api/match`,
@@ -40,12 +40,13 @@ function App() {
       );
       setResult(data);
     } catch (err) {
-      setResult({ error: err.response?.data?.error || err.message });
+      const errorMessage = err.response?.data?.error || "Something went wrong. Please try again later.";
+      setResult({ error: errorMessage });
     } finally {
       setLoading(false);
     }
   };
-    
+      
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-6">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-2xl transition-all duration-300 hover:shadow-2xl">
