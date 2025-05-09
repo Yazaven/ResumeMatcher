@@ -26,40 +26,27 @@ function App() {
   const handleFileChange = (e, setter) => setter(e.target.files[0]);
 
   const handleSubmit = async () => {
-    if (!resumeFile || !jobFile) return alert('Please upload both files.');
-    setLoading(true);
+      if (!resumeFile || !jobFile) return alert('Upload both files.');
+      setLoading(true);
   
-    const form = new FormData();
-    form.append('resume', resumeFile);
-    form.append('job', jobFile);
+      const form = new FormData();
+      form.append('resume', resumeFile);
+      form.append('job', jobFile);
   
-    try {
-      const { data } = await axios.post(
-        `${apiUrl}/match`,  
-        form,
-        { 
-          headers: { 
-            'Content-Type': 'multipart/form-data',
-            'Accept': 'application/json'
-          } 
-        }
-      );
-      setResult(data);
-    } catch (err) {
-      const errorMessage = err.response?.data?.error || 
-                          err.message || 
-                          'Failed to process files. Please try again.';
-      setResult({ error: errorMessage });
-      
-      console.error('API Error:', {
-        message: err.message,
-        response: err.response,
-        request: err.request
-      });
-    } finally {
-      setLoading(false);
-    }
-  };  
+      try {
+          const { data } = await axios.post(
+              `${apiUrl}/match`, 
+              form,
+              { headers: { 'Content-Type': 'multipart/form-data' } }
+          );
+          setResult(data);
+      } catch (err) {
+          setResult({ error: err.response?.data?.error || err.message });
+      } finally {
+          setLoading(false);
+      }
+  };
+  
       
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-6">
