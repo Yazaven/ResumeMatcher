@@ -13,7 +13,13 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={
+    r"*": {
+        "origins": ["*"],
+        "methods": ["POST"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 def truncate_text(text, max_words=300):
     return " ".join(text.split()[:max_words])
